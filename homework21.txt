@@ -1,0 +1,57 @@
+Sub Easy_Hmwk2()
+
+    ' Loop through all the sheets
+    
+    For Each ws In Worksheets
+ 
+        ' Insert the labels for cell I1 & cell J1 and change the width of column J.
+        ws.Range("I1").Value = "Ticker"
+        ws.Range("J1").Value = "Total Stock Volume"
+        ws.Columns("J").ColumnWidth = 20
+        
+        ' Find the last row of the each (year) worksheet and find each stock symbol in column A and put it in column I
+        ' Find the total volume of the each stock symbol and put it in column J so that it coincides with the its stock symbol.
+
+        Dim yearLastRow As Long
+        Dim i As Long
+        Dim ticker_location As Integer
+        Dim volume As Double
+        ticker_location = 2
+        volume = 0
+        
+        yearLastRow = ws.Cells(Rows.Count, "A").End(xlUp).Row
+        
+        For i = 2 To yearLastRow
+
+            If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+
+            ' Set the stock symbol
+                ws.Range("I" & ticker_location).Value = ws.Range("A" & i).Value
+
+            ' Add the last row to volume total
+                volume = volume + ws.Range("G" & i).Value
+            
+            ' Place the total volume in column J that coincides with its ticker symbol
+                ws.Range("J" & ticker_location).Value = volume
+            
+            ' Add to the ticker  & volume location
+                ticker_location = ticker_location + 1
+
+            ' Reset the volume
+                volume = 0
+
+            ' If the cell immediately following a row is the same stock
+            Else
+                
+                ' Add to the volume for the stock symbol
+                volume = volume + ws.Range("G" & i).Value
+               
+
+            End If
+        
+        Next i
+
+  
+    Next ws
+    
+    End Sub
